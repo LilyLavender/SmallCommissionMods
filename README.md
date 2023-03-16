@@ -12,3 +12,5 @@ Video Link: https://www.youtube.com/watch?v=y2jgzv_aMOA
 <br>-Smash but the air is the ground (airIsGround)- https://gamebanana.com/mods/430524
 <br>-Pummelling trades damage (grabSwap)- (not uploaded because it doesn't work for player 2)
 <br>-Random crits or non-crits (quarter)- (not uploaded because I plan to rework it... eventually)
+
+If you have any questions regarding any code, you can reach me on discord at LilyLambda#6258
