@@ -1,24 +1,20 @@
-//When building the mod, I just uncomment whichever one I'm working on
+#![feature(
+    concat_idents,
+    proc_macro_hygiene
+)]
+#![allow(
+    unused_imports,
+    unused_parens,
+	unused_macros,
+	unused_variables,
+	unused_assignments,
+	non_upper_case_globals,
+	non_snake_case,
+	dead_code,
+    clippy::borrow_interior_mutable_const
+)]
 
-#![feature(concat_idents)]
-#![feature(proc_macro_hygiene)]
-#![allow(unused_imports)]
-#![allow(unused_parens)]
-#![allow(unused_macros)]
-#![allow(unused_variables)]
-#![allow(dead_code)]
-#![allow(non_upper_case_globals)]
-#![allow(non_snake_case)]
-#![allow(unused_assignments)]
-
-
-//mod randomEffect;
-//mod quarter;
-//mod closeKill;
-//mod noSpecialFall;
-//mod delayedKnockback;
-//mod airIsGround;
-//mod grabSwap;
+// add the mod you want to build here
 
 extern "C"{
     #[link_name = "_ZN3lib9SingletonIN3app14FighterManagerEE9instance_E"]
@@ -27,11 +23,5 @@ extern "C"{
 
 #[skyline::main(name = "randomEffect")]
 pub fn main() {
-    //randomEffect::install();
-	//quarter::install();
-	//closeKill::install();
-	//noSpecialFall::install();
-	//delayedKnockback::install();
-	//airIsGround::install();
-	//grabSwap::install();
+    // add the mod you want to build here
 }
