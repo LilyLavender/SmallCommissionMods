@@ -18,10 +18,11 @@ Source code for various smaller mods, typically commissions
 - OG Pacman movement (nerfPacman) - [link](https://gamebanana.com/mods/473513)
 
 ### EDM
-- Coming soon...
+- Everything is Instant (frame1) - [link](https://gamebanana.com/mods/488559)
+- More coming soon...
 
 ### Other
-- Buffed puff rest (buffedRest) - Will get uploaded soon
+- Buffed Jigglypuff rest (buffedRest) - [link](https://gamebanana.com/mods/486854)
 - (Most) other commissions I've done - Available upon request
 
 If you have any questions regarding any code, you can reach me on discord at @LilyLambda
