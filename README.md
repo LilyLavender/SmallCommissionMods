@@ -17,6 +17,8 @@ Source code for various smaller mods, typically commissions
 - Ice Climbers with friendly fire (nerfIceclimbers) - [link](https://gamebanana.com/mods/473511)
 - OG Pacman movement (nerfPacman) - [link](https://gamebanana.com/mods/473513)
 
+- More coming soon...
+
 ### EDM
 - Everything is Instant (frame1) - [link](https://gamebanana.com/mods/488559)
 - More coming soon...
