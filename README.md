@@ -10,10 +10,10 @@ Source code for various smaller mods, typically commissions
 - Every hit stuns (delayedKnockback) - [link](https://gamebanana.com/mods/430518)
 - Smash but the air is the ground (airIsGround) - [link](https://gamebanana.com/mods/430524)
 - Random crits or non-crits (quarter) - Not uploaded, want to re-work in the future
-- Pummelling trades damage (grabSwap) - Not uploaded, needs testing to see if bugs are arena-specific or not
+- Pummelling trades damage (grabSwap) - Not uploaded, needs testing for desyncs
 
 - Donkey Kong with timed attacks (nerfDonkey) - [link](https://gamebanana.com/mods/473510)
-- Game & Watch moves like the og games (nerfGamewatch) - Not uploaded, only works on small battlefield
+- Game & Watch moves like og g&w (nerfGamewatch) - Not uploaded, only works on small battlefield
 - Ice Climbers with friendly fire (nerfIceclimbers) - [link](https://gamebanana.com/mods/473511)
 - OG Pacman movement (nerfPacman) - [link](https://gamebanana.com/mods/473513)
 

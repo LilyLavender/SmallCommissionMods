@@ -7,12 +7,11 @@ use {
         hash40
     },
     smash_script::*,
-    smashline::*
+    smashline::{*, Priority::*}
 };
 
 #[skyline::hook(replace = StatusModule::situation_kind)]
 unsafe fn situation_kind_replace(boma: &mut smash::app::BattleObjectModuleAccessor) -> i32 {
-    let fighter_kind = smash::app::utility::get_kind(&mut *boma);
     let status_kind = StatusModule::status_kind(boma);
     // This if statement makes it so the code doesn't take effect if the player is in hitstun
     if ![*FIGHTER_STATUS_KIND_DAMAGE, 
@@ -29,12 +28,11 @@ unsafe fn situation_kind_replace(boma: &mut smash::app::BattleObjectModuleAccess
     ].contains(&status_kind) {
         return *SITUATION_KIND_GROUND;
     }
-    original!()(boma);
+    original!()(boma)
 }
 
 // Causes the player to go down when holding down
-#[fighter_frame_callback]
-pub fn global_fighter_frame(fighter : &mut L2CFighterCommon) {
+unsafe extern "C" fn global_fighter_frame(fighter: &mut L2CFighterCommon) {
     unsafe {
         let boma = smash::app::sv_system::battle_object_module_accessor(fighter.lua_state_agent);
         
@@ -49,7 +47,7 @@ pub fn install() {
     skyline::install_hooks!(
         situation_kind_replace
     );
-    smashline::install_agent_frame_callbacks!(
-        global_fighter_frame,
-    );
+    Agent::new("fighter")
+        .on_line(Main, global_fighter_frame)
+        .install();
 }
