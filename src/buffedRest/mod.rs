@@ -1,18 +1,16 @@
 use {
-	smash::{
-		lua2cpp::*,
-		phx::*,
-		app::{sv_animcmd::*, lua_bind::*, *},
-		lib::lua_const::*,
-		hash40
-	},
-	smash_script::*,
-	smashline::*
+    smash::{
+        lua2cpp::*,
+        phx::*,
+        app::{sv_animcmd::*, lua_bind::*, *},
+        lib::{lua_const::*, L2CValue, L2CAgent},
+        hash40
+    },
+    smash_script::*,
+    smashline::{*, Priority::*}
 };
-use smash::lib::L2CValue;
 
-#[acmd_script( agent = "purin", scripts = [ "game_speciallwl", "game_speciallwr", "game_specialairlwl", "game_specialairlwr" ], category = ACMD_GAME, low_priority )]
-unsafe fn purin_game_speciallw(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn purin_game_speciallw(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         JostleModule::set_status(agent.module_accessor, false);
     }
@@ -45,7 +43,7 @@ unsafe extern "C" fn checkForHit(agent: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    smashline::install_acmd_scripts!(
-        purin_game_speciallw,
-    );
+    Agent::new("purin")
+        .game_acmd("game_speciallw", purin_game_speciallw, Default)
+        .install();
 }
