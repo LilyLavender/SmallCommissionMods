@@ -36,9 +36,9 @@ unsafe extern "C" fn global_fighter_frame(fighter: &mut L2CFighterCommon) {
     unsafe {
         let boma = smash::app::sv_system::battle_object_module_accessor(fighter.lua_state_agent);
         
-        if ControlModule::get_stick_y(boma) <= -0.707 {
-            // Change the y value to adjust how fast the player goes down
-            PostureModule::add_pos_2d(boma, &Vector2f{x: 0.0, y: -0.8});
+        if ControlModule::get_stick_y(boma) == -1.0 {
+            let air_speed_y_stable = WorkModule::get_param_float(boma, hash40("air_speed_y_stable"), 0);
+            PostureModule::add_pos_2d(boma, &Vector2f{ x: 0.0, y: -0.4 * air_speed_y_stable });
         }
     }
 }
