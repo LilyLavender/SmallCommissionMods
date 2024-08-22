@@ -1,26 +1,34 @@
-use smash::hash40;
-use smash::phx::Hash40;
-use smash::phx::Vector3f;
-use smash::lib::lua_const::*;
-use smash::app::*;
-use smash::app::lua_bind::*;
-use smash::lua2cpp::L2CAgentBase;
-use smash::lua2cpp::{L2CFighterCommon};
-use smashline::*;
-use smash_script::*;
-use std::f32::consts::E;
+use {
+    smash::{
+        lua2cpp::*,
+        phx::*,
+        app::{sv_animcmd::*, lua_bind::*, *},
+        lib::{lua_const::*, L2CValue, L2CAgent},
+        hash40
+    },
+    smash_script::*,
+    smashline::{*, Priority::*}
+};
 
-#[fighter_frame_callback]
-pub fn global_fighter_frame(fighter : &mut L2CFighterCommon) {
-    unsafe { 
-		if(MotionModule::motion_kind(fighter.module_accessor) == hash40("fall_special")) {
-			fighter.change_status(FIGHTER_STATUS_KIND_FALL.into(), false.into());
-		}
+#[skyline::hook(replace = smash::lua2cpp::L2CFighterBase_change_status)]
+pub unsafe fn change_status_replace(fighter: &mut L2CFighterBase, status_kind: L2CValue, unk: L2CValue) -> L2CValue {
+    let mut status_kind = status_kind;
+    
+    if status_kind == *FIGHTER_STATUS_KIND_FALL_SPECIAL {
+        status_kind = FIGHTER_STATUS_KIND_FALL.into();
+    }
+    
+    original!()(fighter, status_kind, unk)
+}
+
+fn nro_hook(info: &skyline::nro::NroInfo) {
+    if info.name == "common" {
+        skyline::install_hooks!(
+            change_status_replace
+        );
     }
 }
 
 pub fn install() {
-    smashline::install_agent_frame_callbacks!(
-        global_fighter_frame,
-    );
+    let _ = skyline::nro::add_hook(nro_hook);
 }
