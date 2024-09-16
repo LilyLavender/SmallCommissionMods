@@ -3,23 +3,21 @@ use {
         lua2cpp::*,
         phx::*,
         app::{sv_animcmd::*, lua_bind::*, *},
-        lib::lua_const::*,
-		hash40
+        lib::{lua_const::*, L2CAgent, L2CValue},
+        hash40
     },
     smash_script::*,
-    smashline::*
+    smashline::{*, Priority::*}
 };
-use smash::lib::L2CValue;
-use smash::lib::L2CAgent;
 
 static mut timer: [f32; 8] = [0.0; 8];
 
-#[fighter_frame( agent = FIGHTER_KIND_PACMAN )]
-fn pacman_frame(fighter: &mut L2CFighterCommon) {
+unsafe extern "C" fn pacman_frame(fighter: &mut L2CFighterCommon) {
     unsafe {
 		ModelModule::set_mesh_visibility(fighter.module_accessor, Hash40::new("PizaM"), true);
 		let entry_id = WorkModule::get_int(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID) as usize;
 		timer[entry_id] += 1.0;
+        
 		lua_bind::FighterManager::set_position_lock(singletons::FighterManager(), smash::app::FighterEntryID(entry_id as i32), true);
 		if ControlModule::get_stick_y(fighter.module_accessor) > 0.707 { // UP
 			PostureModule::add_pos_2d(fighter.module_accessor, &Vector2f{x: 0.0, y: 0.8});
@@ -50,43 +48,33 @@ fn pacman_frame(fighter: &mut L2CFighterCommon) {
 		}
 		if DamageModule::damage(fighter.module_accessor, 0) >= 150.0 {
 			fighter.change_status(FIGHTER_STATUS_KIND_DEAD.into(), false.into());
-			// this takes all stocks away instantly, to just take one, you'll have to put in some extra checks
 		}
 	}
 }
 
-#[acmd_script( agent = "pacman", script = "game_attackdash", category = ACMD_GAME, low_priority )]
-unsafe fn pacman_game_attackdash(agent: &mut L2CAgentBase) {
-}
+unsafe extern "C" fn pacman_game_attackdash(agent: &mut L2CAgentBase) {}
 
-#[acmd_script( agent = "pacman", script = "effect_attackdash", category = ACMD_EFFECT, low_priority )]
-unsafe fn pacman_effect_attackdash(agent: &mut L2CAgentBase) {
-}
+unsafe extern "C" fn pacman_effect_attackdash(agent: &mut L2CAgentBase) {}
 
-#[acmd_script( agent = "pacman", scripts = [ "expression_entryl", "expression_entryr" ], category = ACMD_EXPRESSION, low_priority )]
-unsafe fn pacman_expression_entry(agent: &mut L2CAgentBase) {
-}
+unsafe extern "C" fn pacman_expression_entry(agent: &mut L2CAgentBase) {}
 
 #[skyline::hook(replace = StatusModule::situation_kind)]
 unsafe fn situation_kind_replace(module_accessor: &mut smash::app::BattleObjectModuleAccessor) -> i32 {
 	if smash::app::utility::get_kind(&mut *module_accessor) == FIGHTER_KIND_PACMAN {
 		return *SITUATION_KIND_AIR;
-	} else if smash::app::utility::get_kind(&mut *module_accessor) == FIGHTER_KIND_GAMEWATCH {
-		return *SITUATION_KIND_GROUND;
-	}
+	} 
 	original!()(module_accessor)
 }
 
 pub fn install() {
-	smashline::install_agent_frames!(
-		pacman_frame,
-    );
-	smashline::install_acmd_scripts!(
-		pacman_game_attackdash,
-		pacman_effect_attackdash,
-		pacman_expression_entry,
-    );
 	skyline::install_hooks!(
 		situation_kind_replace,
     );
+    Agent::new("pacman")
+        .on_line(Main, pacman_frame)
+        .game_acmd("game_attackdash", pacman_game_attackdash, Default)
+        .effect_acmd("effect_attackdash", pacman_effect_attackdash, Default)
+        .expression_acmd("expression_entryl", pacman_expression_entry, Default)
+        .expression_acmd("expression_entryr", pacman_expression_entry, Default)
+        .install();
 }
