@@ -3,20 +3,17 @@ use {
         lua2cpp::*,
         phx::*,
         app::{sv_animcmd::*, lua_bind::*, *},
-        lib::lua_const::*,
-		hash40
+        lib::{lua_const::*, L2CAgent, L2CValue},
+        hash40
     },
     smash_script::*,
-    smashline::*
+    smashline::{*, Priority::*}
 };
-use smash::lib::L2CValue;
-use smash::lib::L2CAgent;
 
 static mut timer: [f32; 8] = [0.0; 8];
 const FIGHTER_DONKEY_INSTANCE_WORK_ID_FLAG_TIMING_GOOD : i32 = 0x200000eb;
 
-#[fighter_frame(agent = FIGHTER_KIND_DONKEY)]
-fn donkey_frame(fighter: &mut L2CFighterCommon) {
+unsafe extern "C" fn donkey_frame(fighter: &mut L2CFighterCommon) {
     unsafe {
 		let entry_id = WorkModule::get_int(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID) as usize;
 		timer[entry_id] += 1.0;
@@ -45,7 +42,6 @@ unsafe fn attack_replace(lua_state: u64) {
     let hitbox_params: Vec<L2CValue> = (0..36).map(|i| l2c_agent.pop_lua_stack(i + 1)).collect();
 	l2c_agent.clear_lua_stack();
     for i in 0..36 {
-		
 		
         if fighter_kind == FIGHTER_KIND_DONKEY {
 			
@@ -81,10 +77,10 @@ unsafe fn attack_replace(lua_state: u64) {
 }
 
 pub fn install() {
-	smashline::install_agent_frames!(
-        donkey_frame,
-    );
-	skyline::install_hooks!(
+    Agent::new("donkey")
+        .on_line(Main, donkey_frame)
+        .install();
+    skyline::install_hooks!(
         attack_replace,
     );
 }
