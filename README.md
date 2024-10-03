@@ -15,6 +15,7 @@ Source code for various smaller mods, typically commissions
 - Game & Watch moves like og g&w (nerfGamewatch) - Not uploaded, only works on small battlefield
 - Ice Climbers with friendly fire (nerfIceclimbers) - [link](https://gamebanana.com/mods/473511)
 - OG Pacman movement (nerfPacman) - [link](https://gamebanana.com/mods/473513)
+- Byelth with only Sword of the Creator (nerfMaster) - [link](https://gamebanana.com/mods/473508)
 - More coming soon...
 
 ### EDM
