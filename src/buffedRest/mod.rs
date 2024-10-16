@@ -44,6 +44,9 @@ unsafe extern "C" fn checkForHit(agent: &mut L2CAgentBase) {
 
 pub fn install() {
     Agent::new("purin")
-        .game_acmd("game_speciallw", purin_game_speciallw, Default)
+        .game_acmd("game_speciallwl", purin_game_speciallw, Default)
+        .game_acmd("game_speciallwr", purin_game_speciallw, Default)
+        .game_acmd("game_specialairlwl", purin_game_speciallw, Default)
+        .game_acmd("game_specialairlwr", purin_game_speciallw, Default)
         .install();
 }
